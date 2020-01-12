@@ -1,0 +1,31 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: sample-statefulset
+  namespace: default
+spec:
+  serviceName: sample-statefulset-svc
+  replicas: 3
+  selector:
+    matchLabels:
+      app: sample-statefulset
+  template:
+    metadata:
+      labels:
+        app: sample-statefulset
+    spec:
+      containers:
+      - name: sample-statefulset
+        image: nginx:latest
+        volumeMounts:
+          - name: www
+            mountPath: /usr/share/nginx/html
+  volumeClaimTemplates:
+    - metadata:
+        name: www
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          limits:
+            storage: 1G
